@@ -1,6 +1,8 @@
 import axios from 'axios'
 
 const api = axios.create({
+  // In production: set VITE_API_URL=https://yourbackend.up.railway.app/api
+  // In local dev:  falls back to /api (proxied by vite to localhost:8000)
   baseURL: import.meta.env.VITE_API_URL || '/api',
 })
 
@@ -20,7 +22,10 @@ api.interceptors.response.use(
       original._retry = true
       try {
         const refresh = localStorage.getItem('refresh')
-        const { data } = await axios.post('/api/auth/refresh/', { refresh })
+        const { data } = await axios.post(
+          `${import.meta.env.VITE_API_URL || '/api'}/auth/refresh/`,
+          { refresh }
+        )
         localStorage.setItem('access', data.access)
         original.headers.Authorization = `Bearer ${data.access}`
         return api(original)
