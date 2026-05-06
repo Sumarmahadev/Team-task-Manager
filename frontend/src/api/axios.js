@@ -1,8 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  // In production: set VITE_API_URL=https://yourbackend.up.railway.app/api
-  // In local dev:  falls back to /api (proxied by vite to localhost:8000)
+ 
   baseURL: import.meta.env.VITE_API_URL || '/api',
 })
 
